@@ -25,7 +25,7 @@ services:
     volumes:
       - "${DATADIR}/grafana/data:/var/lib/grafana"
     ports:
-      - 3000:3000
+      - 3333:3000
     #user: "1014"
     # uncomment this if you wanta to allow anonymus acces to Grafana for embedding (e.g. in Home Assistant dashboards)
     #environment:
@@ -70,7 +70,7 @@ services:
     networks:
       - node-red-net
     ports:
-      - "1880:1880"
+      - 1880:1880
     volumes:
       - "${DATADIR}/node-red-data:/data"
 
