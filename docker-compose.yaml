@@ -20,9 +20,6 @@ services:
     image: "grafana/grafana:latest"
     restart: unless-stopped
     user: "$PUID:$PGID"
-    depends_on:
-      influxdb:
-        condition: service_healthy
     networks:
       - node-red-net
     volumes:
