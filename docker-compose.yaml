@@ -3,8 +3,11 @@ version: "3"
 # a couple of services for your smarthome, remember to set up your .env file first
 services:
   mosquitto:
+    container_name: mosquitto
     image: "eclipse-mosquitto:1.6"
     restart: unless-stopped
+    networks:
+      - node-red-net
     volumes:
       - "${DATADIR}/mosquitto/config:/mosquitto/config"
       - "${DATADIR}/mosquitto/data:/mosquitto/data"
@@ -13,12 +16,15 @@ services:
       - 1883:1883
 
   grafana:
+    container_name: grafana
     image: "grafana/grafana:latest"
     restart: unless-stopped
     user: "$PUID:$PGID"
     depends_on:
       influxdb:
         condition: service_healthy
+    networks:
+      - node-red-net
     volumes:
       - "${DATADIR}/grafana/data:/var/lib/grafana"
     ports:
@@ -31,6 +37,7 @@ services:
     #  - GF_SECURITY_ALLOW_EMBEDDING=true
 
   influxdb:
+    container_name: influxdb
     image: "influxdb:1.8"
     restart: unless-stopped
     volumes:
@@ -40,13 +47,36 @@ services:
       interval: 30s
       timeout: 1s
       retries: 24
+    networks:
+      - node-red-net
     ports:
       - 127.0.0.1:8086:8086
 
   tasmoadmin:
+    container_name: tasmoadmin
     image: "raymondmm/tasmoadmin"
     restart: unless-stopped
     volumes:
       - "${DATADIR}/tasmoadmin:/data"
+    networks:
+      - node-red-net
     ports:
       - 3080:80
+      
+  node-red:
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    environment:
+      - ZA=Africa/Johannesburg
+    networks:
+      - node-red-net
+    ports:
+      - "1880:1880"
+    volumes:
+      - node-red-data:/data
+
+volumes:
+  node-red-data:
+
+networks:
+  node-red-net:
