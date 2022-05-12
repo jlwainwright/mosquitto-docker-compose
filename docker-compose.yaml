@@ -13,7 +13,7 @@ services:
       - "${DATADIR}/mosquitto/data:/mosquitto/data"
       - "${DATADIR}/mosquitto/log:/mosquitto/log"
     ports:
-      - 1883:1883
+      - 1884:1883
 
   grafana:
     container_name: grafana
