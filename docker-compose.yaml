@@ -26,6 +26,7 @@ services:
       - "${DATADIR}/grafana/data:/var/lib/grafana"
     ports:
       - 3000:3000
+    user: "1014"
     # uncomment this if you wanta to allow anonymus acces to Grafana for embedding (e.g. in Home Assistant dashboards)
     #environment:
     #  - GF_AUTH_DISABLE_LOGIN_FORM=true
